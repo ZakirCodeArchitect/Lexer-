@@ -44,7 +44,7 @@ struct Token
     std::string VALUE;
 };
 
-// Type to string function
+// Token type to strings
 std::string typeToString(enum type TYPE)
 {
     switch (TYPE)
@@ -88,6 +88,7 @@ std::string typeToString(enum type TYPE)
     }
 }
 
+// lexer class
 class Lexer
 {
 public:
@@ -96,6 +97,7 @@ public:
         current = source[cursor];
     }
 
+    // advnace the cursor
     char advance()
     {
         if (cursor < size)
@@ -103,12 +105,13 @@ public:
             char temp = current;
             cursor++;
             characterNumber++;
-            current = (cursor < size) ? source[cursor] : '\0';
+            current = (cursor < size) ? source[cursor] : '\0'; // eof
             return temp;
         }
         return '\0';
     }
 
+    // for spaces
     void checkAndSkip()
     {
         while (current == ' ' || current == '\n' || current == '\t')
@@ -129,7 +132,7 @@ public:
             advance();
         }
     }
-
+    // delimeters and operators
     Token *tokenizeSpecial(enum type TYPE)
     {
         Token *newToken = new Token();
@@ -228,7 +231,7 @@ public:
                 return nullptr;
             }
             return tokenizeSpecial(TOKEN_DIVIDE);
-        case '=':
+        case '=': // ==
             if (peak() == '=')
             {
                 advance();
@@ -276,6 +279,7 @@ public:
         return nullptr;
     }
 
+    // To generate the list of tokens of the source code
     std::vector<Token *> tokenize()
     {
         std::vector<Token *> tokens;
@@ -290,20 +294,20 @@ public:
             }
 
             if (current == '"')
-            { // Check for string literal
-                tokens.push_back(tokenizeString());
+            {
+                tokens.push_back(tokenizeString()); // Check for string literal
                 continue;
             }
 
             if (isalpha(current) || current == '_')
-            { // Check for identifier or keyword
-                tokens.push_back(tokenizeKeywordOrIdentifier());
+            {
+                tokens.push_back(tokenizeKeywordOrIdentifier()); // Check for identifier or keyword
                 continue;
             }
 
             if (isdigit(current))
-            { // Check for literals (integers and floats)
-                tokens.push_back(tokenizeLiterals());
+            {
+                tokens.push_back(tokenizeLiterals()); // Check for literals (integers and floats)
                 continue;
             }
 
