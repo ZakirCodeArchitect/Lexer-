@@ -2,8 +2,6 @@
 
 > A simple lexical analyzer (lexer) designed to process and tokenize source code written in MiniLang, a hypothetical programming language used for compiler construction coursework. This lexer serves as the first step in building a full compiler for MiniLang.
 
-![License](https://img.shields.io/github/license/yourusername/minilang-lexer) ![Issues](https://img.shields.io/github/issues/yourusername/minilang-lexer) ![Stars](https://img.shields.io/github/stars/yourusername/minilang-lexer)
-
 ---
 
 ## 🚀 **Project Overview**
