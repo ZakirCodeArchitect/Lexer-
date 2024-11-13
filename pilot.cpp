@@ -3,7 +3,7 @@
 #include <sstream>
 #include <vector>
 
-#include "header/lexer.hpp"
+#include "./header/lexer.hpp"
 
 int main(int argc, char **argv)
 {
