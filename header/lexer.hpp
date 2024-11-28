@@ -7,12 +7,11 @@
 #include <iostream>
 
 // Enum for token types
-enum type
+enum TokenType // type
 {
     TOKEN_ID,
     TOKEN_INT,
     TOKEN_FLOAT,
-    TOKEN_KEYWORD,
     TOKEN_PRINT,
     TOKEN_MINUS,
     TOKEN_PLUS,
@@ -35,17 +34,20 @@ enum type
     TOKEN_COMMA,
     TOKEN_REL_LESSTHAN,
     TOKEN_REL_GREATERTHAN,
+    TOKEN_KEYWORD,
+    TOKEN_EOF,
+    TOKEN_RETURN
 };
 
 // Structure for Tokens
 struct Token
 {
-    enum type TYPE;
+    enum TokenType TYPE;
     std::string VALUE;
 };
 
 // Token type to strings
-std::string typeToString(enum type TYPE)
+std::string typeToString(enum TokenType TYPE)
 {
     switch (TYPE)
     {
@@ -56,10 +58,11 @@ std::string typeToString(enum type TYPE)
     case TOKEN_FLOAT:
         return "LITERAL";
     case TOKEN_KEYWORD:
-    case TOKEN_PRINT:
     case TOKEN_IF:
     case TOKEN_ELSE:
     case TOKEN_WHILE:
+        return "KEYWORD";
+    case TOKEN_RETURN:
         return "KEYWORD";
     case TOKEN_MINUS:
     case TOKEN_PLUS:
@@ -83,6 +86,11 @@ std::string typeToString(enum type TYPE)
         return "STRING";
     case TOKEN_EQUALS:
         return "OPERATOR";
+    case TOKEN_EOF:
+        return "TOKEN_EOF";
+    case TOKEN_PRINT:
+        return "KEYWORD"; // Ensure it's categorized correctly
+
     default:
         return "UNRECOGNIZED_TOKEN";
     }
@@ -133,7 +141,7 @@ public:
         }
     }
     // delimeters and operators
-    Token *tokenizeSpecial(enum type TYPE)
+    Token *tokenizeSpecial(enum TokenType TYPE)
     {
         Token *newToken = new Token();
         newToken->TYPE = TYPE;
@@ -141,6 +149,7 @@ public:
         return newToken;
     }
 
+    std::vector<std::string> keywords = {"return", "print"}; // change
     Token *tokenizeKeywordOrIdentifier()
     {
         std::stringstream buffer;
@@ -161,7 +170,7 @@ public:
             newToken->TYPE = TOKEN_WHILE;
         else if (keyword == "print")
             newToken->TYPE = TOKEN_PRINT;
-        else if (keyword == "int" || keyword == "float")
+        else if (keyword == "int" || keyword == "float" || keyword == "return")
             newToken->TYPE = TOKEN_KEYWORD;
         else
             newToken->TYPE = TOKEN_ID; // Default to identifier if not a keyword
@@ -271,6 +280,8 @@ public:
             return tokenizeSpecial(TOKEN_LEFT_BRACE);
         case '}':
             return tokenizeSpecial(TOKEN_RIGHT_BRACE);
+        case 0:
+            return tokenizeSpecial(TOKEN_EOF);
         default:
             std::cerr << "Unrecognized character at line " << lineNumber << std::endl;
             advance();
@@ -299,6 +310,7 @@ public:
                 continue;
             }
 
+            // tokenize ID
             if (isalpha(current) || current == '_')
             {
                 tokens.push_back(tokenizeKeywordOrIdentifier()); // Check for identifier or keyword

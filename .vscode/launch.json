@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "d:/University Data/Semester 7/CC/Assignments/Assignment 1/A1_v1",
-      "program": "d:/University Data/Semester 7/CC/Assignments/Assignment 1/A1_v1/build/Debug/outDebug",
+      "cwd": "d:/University Data/Semester 7/CC/Assignments/Assignment 1/CC_A1_Zakir_055/header",
+      "program": "d:/University Data/Semester 7/CC/Assignments/Assignment 1/CC_A1_Zakir_055/header/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
